@@ -9,10 +9,22 @@ Use the vox-director skill (https://github.com/Alisa0808/vox-director, MIT): a V
   (images via Nano Banana / Gemini image, video via Gemini Omni, TTS via Gemini) and select it in beats.json
   with `"provider": "google"`. `generativelanguage.googleapis.com` is reachable from the cloud environment.
 
-## Steps (next session)
-1. Check that `GEMINI_API_KEY` is set (it lives in the environment settings, never in chat).
-   List the models the key can use.
-2. Clone vox-director, install it as a skill, and write `GoogleProvider`.
+## Status (2026-11-03)
+- **Key: works.** The proxy adds it to every generativelanguage.googleapis.com request, so
+  `GEMINI_API_KEY` is not set in the shell, and that is fine. The key can see Nano Banana 2 (`gemini-3.1-flash-image`),
+  Gemini Omni (`gemini-omni-1.1-flash`), TTS (`gemini-3.8-flash-tts`) and Lyria (`lyria-3-clip-preview`).
+- **Blocker: free tier.** Image, video and music have a free-tier quota of **0** (HTTP 429, "limit: 0").
+  Only TTS works. The user has to enable billing on the key's Google project (aistudio.google.com → the
+  key → "Set up billing"). Nothing image/video/music-related can be tested until then.
+- **vox-director + GoogleProvider: done.** `bash studio/vox/install-vox.sh` (re-run in each new session)
+  installs vox-director at a pinned commit into `.claude/skills/vox-director` and registers
+  `"provider": "google"` from `studio/vox/google_provider.py`. TTS verified through the provider; image fails
+  fast with the billing message. Video/music request shapes are unverified until billing is on.
+  Not covered: background removal (use local `rembg`) and `asr_beats.py` (calls Atlas STT directly).
+
+## Steps
+1. ~~Check the key, list models.~~ Done.
+2. ~~Install vox-director, write `GoogleProvider`.~~ Done. Once billing is on: `python3 .claude/skills/vox-director/scripts/google_provider.py image` (then `video`, `music`) to verify.
 3. **Test clip first:** animate one Labubu photo with Gemini Omni. vox-director's own notes say Gemini Omni
    blocks recognisable brands and logos ("prohibited contents"). If Labubu is blocked, the fallbacks are
    Kling (via Atlas Cloud) or vox-director's local keyframe engine (no video model, never blocked).
