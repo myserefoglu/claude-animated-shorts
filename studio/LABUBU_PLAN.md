@@ -1,3 +1,8 @@
+> **Superseded process.** New videos follow `PIPELINE.md` (imagery-plan discussion before any
+> generation) and `STYLE.md`. Labubu v1 was rendered on 2026-11-03 (`src/videos/labubu/`,
+> 51.5 s): timing, voice, captions and sound worked, but the look was generic (code-drawn
+> shapes, bouncy motion). Next: write `videos/labubu/IMAGERY_PLAN.md` with the user, then rebuild.
+
 # Labubu video plan (handoff for the next session)
 
 ## Approach
