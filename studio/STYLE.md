@@ -5,11 +5,32 @@ references in `references/vox/` (NOTES.md + frames + sheets). When in doubt, put
 reference frame.
 
 ## The look in one line
-**A full-colour world in 2.5D: subdued background layers, a vivid key object, a camera that moves
-through layered cut-outs so flat images feel 3D, and elegant serif words landing on the beat.**
+**A paper-cut collage world in 2.5D:** every element is a hand-cut paper piece (white cut edge or
+torn edge, paper texture, a soft shadow on the layer below), stacked in depth and moving slightly
+and independently while the camera drifts through. The paper world is muted; the key object is a
+vivid printed cut-out. Beethoven's pacing and serif words on top.
 
-Primary references: the motion, cut-outs and type of `beethoven_*` (but NOT its black and white),
-the red cable car in `parallax_*` (vivid object in front of muted mountains, made 3D from one photo).
+**Paper-cut is the core, not an option.** (Corrected 2026-11-03: an earlier v3 draft demoted it
+after the black-and-white discussion. The user's point: the paper-cut pieces moving slightly is
+what gives the 3D feeling.) The cable-car parallax technique is the *mechanism*; paper is the
+*material* that makes the mechanism read as 3D.
+
+References: `mumbai_*` (layered paper, cut photos, tape, edges), `ori_*` (paper relief, one accent),
+`beethoven_*` (pacing, cut-out compositing, serif type; NOT its black and white), `parallax_*`
+(the layer + camera mechanism).
+
+## Paper-cut rules (what makes 2D feel 3D)
+1. **Every element is a separate cut piece:** white cut edge on printed photos and figures, torn
+   edges on paper sheets (sky, ground, hills, water, headline strips). No element without an edge.
+2. **Shadows between layers:** each piece casts a soft offset shadow onto the layer behind. The
+   shadow's offset grows with the gap between layers, so depth is visible.
+3. **Independent small motion:** pieces sway, drift or breathe slightly (fractions of a degree,
+   a few px), each at its own rhythm, as if lightly moved by hand or air. Shadows move with them.
+4. **Camera parallax on top:** slow push or lateral drift, near pieces move more than far ones.
+5. **Paper texture everywhere:** fibres, grain, slight print misregistration on printed pieces,
+   tape on some joins.
+6. **Entrances:** pieces slide in from an edge, drop onto the stack, or are revealed by a tear;
+   they settle without bounce.
 
 ## Colour
 - **Background layers are subdued:** lower saturation (about 40-60 % of the original), slightly
@@ -85,15 +106,21 @@ drafts.
 
 ## Voice
 Calm, low, deliberate, with breathing room between lines (not the bright, upbeat v1 voice).
+Chosen voice: **Gemini `Algenib`** (gravelly), via `gemini-2.5-flash-preview-tts`, plain text only;
+pauses come from punctuation ("...") and line breaks. Picked from a 5-voice audition on 2026-11-03.
 
-## Scene options (use per row when they fit the story)
+## Paper-world variants (all paper-cut; pick per row)
 - **Evidence desk** (`mumbai_*`): screenshots, documents, maps, red string, stamps, on paper.
   Good for facts, dates, connections. Keep it in colour, background subdued.
 - **Paper diorama** (`ori_*`): layered paper scenes, for a product or "how it works" hero shot,
   possibly an AI video clip.
 
 ## Image prompt style block (reuse verbatim, change only the scene)
-"Cinematic documentary photograph, natural light, real textures, shallow depth of field, clear
-separation between foreground, subject and background, the {key object} clearly separated and
-fully visible, no text, no logos. 2K." (Colour grading and the subdued background are done in
-post, so prompts ask for a normal full-colour photo.)
+"Mixed-media hand-cut PAPER COLLAGE, layered paper-craft scene: torn and scissor-cut paper edges,
+visible paper fibres and grain, soft real shadows between paper layers, printed halftone photo
+cut-outs with white edges, tape on some joins. Muted paper palette ({palette}). Each element a
+separate piece with a clear edge and its own shadow. {scene}. No text, no logos. NOT 3D render,
+NOT CGI. 2K."
+The key object is usually the user's real photo, cut out and added in Remotion as a printed
+cut-out with a white edge; the generated plate provides the paper world around it. Generating
+separate pieces (sky sheet, ground sheet, props) instead of one flat poster keeps parallax easy.
