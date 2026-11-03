@@ -35,7 +35,10 @@ References: `mumbai_*` (layered paper, cut photos, tape, edges), `ori_*` (paper 
 ## Colour
 - **Background layers are subdued:** lower saturation (about 40-60 % of the original), slightly
   darker, pulled towards one colour family per scene.
-- **The key object stays vivid:** full saturation, slightly brighter and crisper. One key object
+- **The key object stays vivid and is visibly lifted:** brightness about +10 %, saturation
+  +20-25 %, slightly more contrast, plus a soft warm light glow behind it. The world behind it is
+  pulled down a step (saturation about 75 %, brightness about 90 %) so the gap is visible.
+  (User, 2026-11-03: the first paper test did not brighten the key object enough.) One key object
   (or one group, like a crowd of Labubus) per scene, decided per row in the imagery plan.
 - **Atmospheric depth:** the farther the layer, the hazier and less saturated. This also sells
   the 3D feeling.
@@ -80,6 +83,9 @@ price racing up) is often clearer.
 - **The key word takes the key object's colour** (e.g. "Everyone wanted *one*" with *one* in
   Labubu pink).
 - Numbers in bursts use the same serif, large.
+- **Text always glows subtly, on every scene** (user, 2026-11-03: otherwise it washes out).
+  Light text: a soft glow in its own colour (6/22/48 px) plus a faint dark halo. Dark text: a
+  soft light halo only (a dark glow reads as a smudge). The coloured key word glows in its colour.
 - Text is added in Remotion, never baked into AI images.
 
 ## People

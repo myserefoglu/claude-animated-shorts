@@ -16,6 +16,23 @@ const P = (n: string) => staticFile(`papertest/${n}`);
 /** Soft paper shadow whose offset grows with the gap to the layer below. */
 const shadow = (gap: number) => `drop-shadow(${gap * 0.35}px ${gap}px ${gap * 1.6}px rgba(30,25,20,${0.22 + gap * 0.004}))`;
 
+/** Subtle glow in the text's own colour + a soft contrast halo, so text never washes out. */
+const glow = (color: string, dark?: boolean) => {
+  const h = color.replace("#", "");
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const halo = dark ? "255,250,240" : "0,0,0";
+  if (dark) {
+    // dark text: glow with a soft light halo (a dark glow reads as a smudge)
+    return [`0 0 4px rgba(${halo},0.9)`, `0 0 16px rgba(${halo},0.75)`, `0 0 40px rgba(${halo},0.5)`].join(", ");
+  }
+  return [
+    `0 0 6px rgba(${r},${g},${b},0.55)`,
+    `0 0 22px rgba(${r},${g},${b},0.45)`,
+    `0 0 48px rgba(${r},${g},${b},0.25)`,
+    `0 2px 28px rgba(${halo},${dark ? 0.75 : 0.55})`,
+  ].join(", ");
+};
+
 /** Words that settle in (fade + small rise), no bounce. */
 const Words: React.FC<{ text: string; at: number; size: number; color: string; y: number; dark?: boolean }> = ({ text, at, size, color, y, dark }) => {
   const f = useCurrentFrame();
@@ -24,7 +41,7 @@ const Words: React.FC<{ text: string; at: number; size: number; color: string; y
   return (
     <div style={{ position: "absolute", left: 0, right: 0, top: y, textAlign: "center", fontFamily: SERIF, fontStyle: "italic", fontSize: size,
       color, opacity: k, transform: `translateY(${(1 - k) * 18}px)`, lineHeight: 1,
-      textShadow: dark ? "0 3px 18px rgba(255,255,255,0.35)" : "0 4px 22px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.5)" }}>
+      textShadow: glow(color, dark) }}>
       {text}
     </div>
   );
@@ -69,7 +86,7 @@ const ShotClip: React.FC = () => {
           {/* the crowd, lifted off the print as a paper cut-out */}
           <div style={{ position: "absolute", left: ox, top: oy, width: cw, height: ch, opacity: toPrint > 0 ? 1 : 0,
             transform: `scale(${printScale + 0.12 * lift}) rotate(${-2.2 * toPrint + 1.6 * lift + sway}deg) translate(${10 * lift}px, ${-30 * lift}px)`,
-            transformOrigin: `${540 - ox}px ${1056 - oy}px`, filter: shadow(4 + 30 * lift) }}>
+            transformOrigin: `${540 - ox}px ${1056 - oy}px`, filter: `brightness(${1 + 0.08 * lift}) saturate(${1 + 0.15 * lift}) ${shadow(4 + 30 * lift)}` }}>
             <Img src={P("crowd_cut.png")} style={{ width: cw, height: ch }} />
           </div>
         </AbsoluteFill>
@@ -99,6 +116,7 @@ const ShotPaper: React.FC = () => {
   };
   return (
     <AbsoluteFill style={{ overflow: "hidden" }}>
+      <AbsoluteFill style={{ filter: "saturate(0.75) brightness(0.9)" }}>
       <Img src={P("sky.png")} style={{ position: "absolute", left: -100 + L(0.3).x, top: -100, width: 1280, transform: `scale(${L(0.3).s})` }} />
       {/* torn-paper clouds at two depths */}
       <Img src={P("cloud2.png")} style={{ position: "absolute", left: 640 + L(0.4).x + drift(7, 8, 50), top: 690 + drift(8, 4, 37), width: 330, filter: shadow(6) }} />
@@ -108,12 +126,17 @@ const ShotPaper: React.FC = () => {
         transform: `rotate(${-6 + drift(2, 3, 14)}deg)`, filter: shadow(6) }} />
       {layer(0.6, 1080, "hill_back.png", 1380, 10)}
       {layer(0.9, 1290, "hill_front.png", 1380, 16)}
+      </AbsoluteFill>
       {/* the key object: vivid printed cut-out with a white edge, lifted highest */}
+      {/* soft light behind the key object */}
+      <div style={{ position: "absolute", left: 540 - 520 + L(1.3).x * 0.6, top: 560, width: 1040, height: 1040, opacity: lab * 0.9,
+        background: "radial-gradient(circle, rgba(255,247,225,0.55) 0%, rgba(255,247,225,0.18) 38%, transparent 66%)" }} />
       <div style={{ position: "absolute", left: 540 - 300 + L(1.3).x * 0.6, top: 680 + (1 - lab) * 160, width: 600, opacity: lab,
-        transform: `scale(${L(1.3).s}) rotate(${drift(5, 1.2, 26)}deg)`, transformOrigin: "50% 90%", filter: shadow(18 + 14 * lab) }}>
+        transform: `scale(${L(1.3).s}) rotate(${drift(5, 1.2, 26)}deg)`, transformOrigin: "50% 90%",
+        filter: `brightness(1.12) saturate(1.25) contrast(1.05) ${shadow(18 + 14 * lab)}` }}>
         <Img src={P("labubu_print.png")} style={{ width: 600 }} />
       </div>
-      {layer(1.2, 1560, "ground.png", 1380, 20)}
+      <div style={{ filter: "saturate(0.75) brightness(0.9)" }}>{layer(1.2, 1560, "ground.png", 1380, 20)}</div>
       {/* near plane crossing the frame */}
       <Img src={P("plane1.png")} style={{ position: "absolute", left: -260 + f * 5.2, top: 120 + drift(4, 18, 20), width: 230,
         transform: `rotate(${4 + drift(3, 4, 12)}deg) scaleX(-1)`, filter: shadow(28) }} />
