@@ -4,3 +4,5 @@ studio/public/labubu/*.png
 studio/public/labubu/*.wav
 studio/labubu/voice/
 studio/labubu/*_stem.wav
+studio/public/papertest/*
+!studio/public/papertest/meta.json
