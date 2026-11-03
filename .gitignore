@@ -1,2 +1,6 @@
 .claude/skills/vox-director/
 studio/labubu/photos/
+studio/public/labubu/*.png
+studio/public/labubu/*.wav
+studio/labubu/voice/
+studio/labubu/*_stem.wav
