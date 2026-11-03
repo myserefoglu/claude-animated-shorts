@@ -2,6 +2,13 @@
 
 How every video is made. Read with `STYLE.md` (the look) and `references/vox/NOTES.md` (examples).
 
+## The library
+Shared assets live in the separate repo **`myserefoglu/shorts-library`** (paper shelf, stock,
+props, figures, reference frames, catalog with tags and quality scores, usage log, look cards).
+Each video starts with a **look card** there (its own palette, paper family, motif and transition
+signature), pulls supporting layers from the library, and adds only its topic-specific material.
+See that repo's README for the anti-sameness rules.
+
 ## The one rule
 **Nothing is generated until its imagery is agreed.** Every video goes through the imagery-plan
 discussion (stage 2) and a stills check (stage 5) before any full render. Each gate is a
