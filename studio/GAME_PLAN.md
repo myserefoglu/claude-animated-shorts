@@ -11,18 +11,16 @@
 | Python `numpy`, `scipy`, `Pillow` (for the audio and QA scripts); ffmpeg | Done (ffmpeg was already installed) |
 | Headless Chromium for rendering | Present at `/opt/pw-browsers/chromium_headless_shell-1243/...` |
 | **26 Kenney CC0 models** → `public/bridge/kenney/*.glb` (Nature Kit + Fantasy Town Kit) | **Blocked**: kenney.nl and opengameart.org are denied by the network policy |
-| **First test still** | **Blocked**: auto mode won't run the downloaded repo's code without your permission |
+| **First test stills** | Done. Frames 100/300/1000 render with the full look (ink, lens blur, grade). This needed two fixes: `@react-three/postprocessing` pinned to 3.0.4 (newer versions render blank frames under Remotion), and the stills script switched to Linux Chromium + CPU WebGL |
 
 ### Unblocking
 1. **Kenney models** (pick one):
    - Add `kenney.nl` to the cloud environment's allowed domains (environment menu → Edit → Network access). Then I download Nature Kit and Fantasy Town Kit and copy the 26 `.glb` files over.
    - Or upload the two zips (Nature Kit, Fantasy Town Kit 2.0) yourself.
    - Without them, the scenes still render. Trees, bushes, flowers, stalls, banners, the windmill and the canoe are just missing.
-2. **Running the repo's code:** tell me it's OK to run this repo's scripts (`scripts/*.mjs`, `templates/audio/*.py`), or add a Bash permission rule for them.
-3. **Machine-specific edits I still need to make:** `scripts/bridge-stills.mjs` hard-codes a Windows Chrome path and `gl: "angle"`. Here it needs the headless Chromium path above and `gl: "swangle"`, because there's no GPU and rendering runs on the CPU.
 
 ## Constraint: this container has no GPU
-- The bridge's 2K final render ran at about 4 fps on a GPU, about 10 minutes for 67 s. On this 4-vCPU container it will be much slower. I haven't measured it yet; the first test still will tell us.
+- The bridge's 2K final render ran at about 4 fps on a GPU, about 10 minutes for 67 s. On this 4-vCPU container it will be much slower. Measured here: about 45 s per still at half size, and about 50 s per frame at the final 1440x2560. A 67 s short is 2,025 frames, so a final render on this container would take many hours.
 - **Recommendation:** do the stills and look-checks here at 0.5 scale. If the CPU timing is bad, run the final 2K render on your own PC with a GPU.
 
 ## Steps to make a new short
