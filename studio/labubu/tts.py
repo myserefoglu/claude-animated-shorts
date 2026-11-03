@@ -1,32 +1,38 @@
-"""Narration: one Gemini TTS take per script line -> labubu/voice/lNN.wav (48 kHz mono, trimmed).
-Plain text only: any style instruction in the prompt makes the model add sound effects/padding."""
-import json, sys, os, base64, subprocess, time, urllib.request, urllib.error
-lines = json.load(open("labubu/lines.json"))
-VOICE = sys.argv[1] if len(sys.argv) > 1 else "Puck"
-MODEL = "gemini-3.8-flash-tts"
-for i, text in enumerate(lines):
-    out = f"labubu/voice/l{i:02d}.wav"
-    if os.path.exists(out): continue
-    body = {"contents": [{"parts": [{"text": text}]}],
-            "generationConfig": {"responseModalities": ["AUDIO"],
-              "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": VOICE}}}}}
-    for t in range(8):
-        try:
-            req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent",
-                data=json.dumps(body).encode(), headers={"x-goog-api-key": "proxy", "Content-Type": "application/json"})
-            p = json.load(urllib.request.urlopen(req, timeout=120))["candidates"][0]["content"]["parts"][0]["inlineData"]
-            break
-        except urllib.error.HTTPError as e:
-            msg = e.read().decode()
-            if e.code == 429 and "per day" in msg.lower() and "PerMinute" not in msg: sys.exit(f"daily quota hit at line {i}")
-            print(i, e.code, "waiting"); time.sleep(20)
-    raw = base64.b64decode(p["data"]); tmp = out + ".raw"
-    open(tmp, "wb").write(raw)
-    fmt = [] if "wav" in p["mimeType"] else ["-f", "s16le", "-ar", "24000", "-ac", "1"]
-    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", *fmt, "-i", tmp, "-af",
-        "silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse",
-        "-ar", "48000", "-ac", "1", out], check=True)
-    os.remove(tmp)
-    d = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", out], capture_output=True, text=True).stdout.strip()
-    print(i, d, text[:50], flush=True)
-    time.sleep(6)
+"""Narration for the Labubu short: ONE Gemini TTS take of the whole script -> labubu/voice/take_raw.wav (48 kHz mono).
+
+Run from studio/:  python3 labubu/tts.py [voice]      (default voice: Puck)
+
+Lessons from the first session:
+  - Send the plain script only. Any style instruction ("read this with energy...") makes the model
+    perform around the line: long takes padded with claps and other sounds.
+  - One take for the whole script flows better than per-line takes and costs 1 request
+    (gemini-3.8-flash-tts allows only 10 requests/day on the free tier).
+  - Line timings come from the pauses between lines:
+      ffmpeg -i labubu/voice/take_raw.wav -af silencedetect=n=-40dB:d=0.25 -f null -
+    then update SEGMENTS in src/videos/labubu/timeline.ts and SEG in labubu/sound.py.
+"""
+import base64, json, subprocess, sys, time, urllib.error, urllib.request
+
+MODEL = "gemini-2.5-flash-preview-tts"   # 3.8-flash-tts is newer but its free daily quota is tiny
+voice = sys.argv[1] if len(sys.argv) > 1 else "Puck"
+text = "\n\n".join(json.load(open("labubu/lines.json")))
+body = {"contents": [{"parts": [{"text": text}]}],
+        "generationConfig": {"responseModalities": ["AUDIO"],
+                             "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
+for attempt in range(4):
+    try:
+        req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent",
+                                     data=json.dumps(body).encode(),
+                                     headers={"x-goog-api-key": "proxy-injected", "Content-Type": "application/json"})
+        part = json.load(urllib.request.urlopen(req, timeout=300))["candidates"][0]["content"]["parts"][0]["inlineData"]
+        break
+    except urllib.error.HTTPError as e:   # 502s happen on long takes; just retry
+        print(e.code, e.read().decode()[:200]); time.sleep(15)
+else:
+    sys.exit("TTS failed")
+raw = base64.b64decode(part["data"])
+fmt = [] if "wav" in part["mimeType"] else ["-f", "s16le", "-ar", "24000", "-ac", "1"]
+open("labubu/voice/take.raw", "wb").write(raw)
+subprocess.run(["ffmpeg", "-loglevel", "error", "-y", *fmt, "-i", "labubu/voice/take.raw", "-ar", "48000", "-ac", "1",
+                "labubu/voice/take_raw.wav"], check=True)
+print("wrote labubu/voice/take_raw.wav")
