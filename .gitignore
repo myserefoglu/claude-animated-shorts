@@ -6,3 +6,5 @@ studio/labubu/voice/
 studio/labubu/*_stem.wav
 studio/public/papertest/*
 !studio/public/papertest/meta.json
+studio/public/lab2/*
+!studio/public/lab2/meta.json
