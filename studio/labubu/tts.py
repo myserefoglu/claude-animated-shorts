@@ -1,6 +1,6 @@
 """Narration for the Labubu short: ONE Gemini TTS take of the whole script -> labubu/voice/take_raw.wav (48 kHz mono).
 
-Run from studio/:  python3 labubu/tts.py [voice]      (default voice: Puck)
+Run from studio/:  python3 labubu/tts.py [voice]      (default voice: Algenib)
 
 Lessons from the first session:
   - Send the plain script only. Any style instruction ("read this with energy...") makes the model
@@ -13,8 +13,8 @@ Lessons from the first session:
 """
 import base64, json, subprocess, sys, time, urllib.error, urllib.request
 
-MODEL = "gemini-2.5-flash-preview-tts"   # 3.8-flash-tts is newer but its free daily quota is tiny
-voice = sys.argv[1] if len(sys.argv) > 1 else "Puck"
+MODEL = "gemini-3.1-flash-tts-preview"   # the voice the user liked (Labubu v2); 2.5-flash-tts has a 10/day free quota
+voice = sys.argv[1] if len(sys.argv) > 1 else "Algenib"
 text = "\n\n".join(json.load(open("labubu/lines.json")))
 body = {"contents": [{"parts": [{"text": text}]}],
         "generationConfig": {"responseModalities": ["AUDIO"],

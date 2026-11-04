@@ -112,7 +112,8 @@ drafts.
 
 ## Voice
 Calm, low, deliberate, with breathing room between lines (not the bright, upbeat v1 voice).
-Chosen voice: **Gemini `Algenib`** (gravelly), via `gemini-2.5-flash-preview-tts`, plain text only;
+Chosen voice: **Gemini `Algenib`** (gravelly). Use model **`gemini-3.1-flash-tts-preview`** (used for
+Labubu v2, which the user liked); `gemini-2.5-flash-preview-tts` has the same voice but a 10/day free quota. Plain text only;
 pauses come from punctuation ("...") and line breaks. Picked from a 5-voice audition on 2026-11-03.
 
 ## Paper-world variants (all paper-cut; pick per row)
