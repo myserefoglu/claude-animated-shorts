@@ -62,7 +62,7 @@ h1 { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; lett
 .vhead { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--line); }
 .vhead .title { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; }
 select, textarea, input[type="text"] { font: inherit; color: var(--fg); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
-.stage { background: #000; aspect-ratio: 16 / 9; max-width: 100%; width: 100%; display: grid; place-items: center; }
+.stage { background: #000; aspect-ratio: 16 / 9; max-width: 100%; width: 100%; max-height: 78vh; display: grid; place-items: center; margin-inline: auto; }
 .stage video { width: 100%; height: 100%; display: block; }
 .stage .empty { color: #b8bec6; padding: 20px; text-align: center; font-size: 0.95rem; }
 .tc { display: flex; justify-content: space-between; gap: 12px; padding: 8px 14px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; flex-wrap: wrap; }
@@ -218,10 +218,18 @@ textarea.note { width: 100%; min-height: 70px; resize: vertical; }
   function mountVideo() {
     var c = currentClip(), v = currentVer(c), stage = $("stage");
     stage.innerHTML = "";
+    stage.style.aspectRatio = ""; stage.style.width = ""; stage.style.height = "";
     video = null;
     if (!v || !v.url) { stage.innerHTML = '<div class="empty">The video for this part appears here once it is uploaded.</div>'; return; }
     video = document.createElement("video");
     video.controls = true; video.playsInline = true; video.preload = "metadata"; video.src = v.url;
+    video.addEventListener("loadedmetadata", function () {
+      if (video.videoWidth && video.videoHeight) {
+        stage.style.aspectRatio = video.videoWidth + " / " + video.videoHeight;
+        stage.style.width = video.videoHeight > video.videoWidth ? "auto" : "100%";
+        stage.style.height = video.videoHeight > video.videoWidth ? "78vh" : "auto";
+      }
+    });
     video.addEventListener("timeupdate", onTime);
     video.addEventListener("seeked", onTime);
     stage.appendChild(video);

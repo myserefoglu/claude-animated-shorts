@@ -1,0 +1,129 @@
+{
+ "src": "media/short.mp4",
+ "size": [
+  1440,
+  2560
+ ],
+ "fps": 30,
+ "sfx_gain": 2.8,
+ "elements": [
+  {
+   "type": "badge",
+   "layout": "row",
+   "logo": {
+    "file": "logos/mercedes.png",
+    "crop": [
+     0,
+     0,
+     600,
+     600
+    ]
+   },
+   "title": "Mercedes-AMG",
+   "subtitle": "GT 63 Pro · 2025",
+   "in": 2.13,
+   "out": 5.95,
+   "y": 300
+  },
+  {
+   "type": "badge",
+   "layout": "row",
+   "logo": "logos/audi.png",
+   "title": "Audi",
+   "subtitle": "RS 6 Avant",
+   "in": 6.07,
+   "out": 9.78,
+   "y": 300
+  },
+  {
+   "type": "badge",
+   "layout": "row",
+   "logo": "logos/bmw.png",
+   "title": "BMW",
+   "subtitle": "M5 · 2025",
+   "in": 9.9,
+   "out": 13.95,
+   "y": 300
+  },
+  {
+   "type": "badge",
+   "layout": "row",
+   "logo": "logos/porsche.png",
+   "wordmark": true,
+   "title": "Porsche",
+   "subtitle": "718 Cayman GT4",
+   "in": 14.07,
+   "out": 17.78,
+   "y": 300
+  },
+  {
+   "type": "badge",
+   "layout": "row",
+   "logo": "logos/vw.png",
+   "title": "Volkswagen",
+   "subtitle": "Golf MK7 GTI",
+   "in": 17.9,
+   "out": 22.0,
+   "y": 300
+  },
+  {
+   "type": "sfx",
+   "items": [
+    {
+     "kind": "whoosh",
+     "at": 2.13,
+     "len": 0.4
+    },
+    {
+     "kind": "thock",
+     "at": 4.13
+    },
+    {
+     "kind": "whoosh",
+     "at": 6.07,
+     "len": 0.4
+    },
+    {
+     "kind": "thock",
+     "at": 8.03
+    },
+    {
+     "kind": "whoosh",
+     "at": 9.9,
+     "len": 0.4
+    },
+    {
+     "kind": "thock",
+     "at": 11.9
+    },
+    {
+     "kind": "whoosh",
+     "at": 14.07,
+     "len": 0.4
+    },
+    {
+     "kind": "thock",
+     "at": 16.3
+    },
+    {
+     "kind": "whoosh",
+     "at": 17.9,
+     "len": 0.4
+    },
+    {
+     "kind": "thock",
+     "at": 20.07
+    },
+    {
+     "kind": "whoosh",
+     "at": 22.13,
+     "len": 0.45
+    },
+    {
+     "kind": "hit",
+     "at": 22.13
+    }
+   ]
+  }
+ ]
+}

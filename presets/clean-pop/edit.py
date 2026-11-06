@@ -43,7 +43,7 @@ W, H = TL.get("size", [1920, 1080])
 dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", SRC],
                            capture_output=True, text=True).stdout)
 NF = int(round(dur * FPS))
-WORDS = json.load(open(P(TL["words"])))
+WORDS = json.load(open(P(TL["words"]))) if TL.get("words") else []
 if isinstance(WORDS, dict): WORDS = WORDS[TL["section"]]
 
 # ---------------- time references ----------------
@@ -98,8 +98,9 @@ SR = 44100
 rng = np.random.default_rng(11)
 sfx = np.zeros(int(dur * SR) + SR); cues = []
 LV = ST["sfx"]
+SFX_GAIN = TL.get("sfx_gain", 1.0)   # per clip: raise for loud music beds (2.8 = +9 dB), keep 1.0 under speech
 def place(snd, at, name):
-    i = int(max(0, at) * SR); j = min(len(sfx), i + len(snd)); sfx[i:j] += snd[: j - i]; cues.append({"t": round(at, 3), "sfx": name})
+    i = int(max(0, at) * SR); j = min(len(sfx), i + len(snd)); sfx[i:j] += snd[: j - i] * SFX_GAIN; cues.append({"t": round(at, 3), "sfx": name})
 def envx(n, tau): return np.exp(-np.arange(n) / (tau * SR))
 def s_pop(gain, f0=700):
     n = int(0.08 * SR); t = np.arange(n) / SR; f = f0 * np.exp(-t * 22) + 220
@@ -120,6 +121,10 @@ def s_whoosh(len_s, gain, up=True):
         fc = 400 + 3800 * p ** 2; f = 2 * math.sin(math.pi * fc / SR); q = 0.5
         hp = x[i] - y2 - q * y1; y1 = f * hp + y1; y2 = f * y1 + y2; out[i] = y1
     return out / (np.abs(out).max() + 1e-9) * np.sin(np.pi * np.linspace(0, 1, n)) ** 1.5 * gain
+def s_hit(gain):
+    n = int(0.35 * SR); t = np.arange(n) / SR
+    body = np.sin(2 * np.pi * (55 + 90 * np.exp(-t * 30)) * t) * envx(n, 0.09)
+    return np.tanh((body + rng.standard_normal(n) * envx(n, 0.012) * 0.5) * 1.4) * gain
 def s_thock(gain, f0=150):
     n = int(0.18 * SR); t = np.arange(n) / SR
     body = np.sin(2 * np.pi * (f0 + 80 * np.exp(-t * 40)) * t) * envx(n, 0.05)
@@ -277,6 +282,7 @@ def add_logo_card(el):
 
 # ---- brand badge (logo + name + model) ----
 def add_badge(el):
+    if el.get("layout") == "row": return add_badge_row(el)
     BD = ST["badge"]; t_in, t_out = T(el["in"]) + 0.05, T(el["out"]) - 0.05; x, y = el.get("x", 150), el.get("y", 330)
     card = rounded(BD["w"], BD["h"], BD["radius"], rgba(ST["colors"]["card_badge"])); d = ImageDraw.Draw(card)
     lg = load_img(el["logo"]); lg.thumbnail(tuple(BD["wordmark_max"] if el.get("wordmark") else BD["logo_max"]), Image.LANCZOS)
@@ -292,6 +298,39 @@ def add_badge(el):
         k = ease_out_cubic((t - t_in) / 0.32); ko = ease_in_cubic((t - t_out) / 0.22) if t > t_out else 0
         frame.alpha_composite(with_alpha(img, k * (1 - ko)), (x - int((1 - k) * 120) - int(ko * 60) - pad, y - pad))
     ELS.append((draw, t_in, t_out + 0.3))
+
+
+# ---- brand badge, wide row layout (vertical video): logo left, brand + model right, drops in from the top ----
+def add_badge_row(el):
+    BR = ST["badge_row"]; t_in, t_out = T(el["in"]), T(el["out"]); cx, y = el.get("x", W // 2), el.get("y", 380)
+    fb = ImageFont.truetype(font_path("black"), BR["title_size"]); fm = ImageFont.truetype(font_path("semibold"), BR["subtitle_size"])
+    lg = load_img(el["logo"]); lg.thumbnail(tuple(BR["wordmark_max"] if el.get("wordmark") else BR["logo_max"]), Image.LANCZOS)
+    tw = max(fb.getlength(el["title"]), fm.getlength(el.get("subtitle", "")))
+    lw = BR["logo_box"] if not el.get("wordmark") else lg.width
+    w = int(BR["pad"] + lw + BR["gap"] + tw + BR["pad"]); h = BR["h"]
+    card = rounded(w, h, BR["radius"], rgba(ST["colors"]["card_badge"])); d = ImageDraw.Draw(card)
+    card.alpha_composite(lg, (BR["pad"] + (lw - lg.width) // 2, (h - lg.height) // 2))
+    tx = BR["pad"] + lw + BR["gap"]
+    d.text((tx, BR["title_y"]), el["title"], font=fb, fill=rgba(ST["colors"]["ink"]))
+    if el.get("subtitle"): d.text((tx, BR["subtitle_y"]), el["subtitle"], font=fm, fill=rgba(ST["colors"]["muted"]))
+    img, pad = card_shadow(card)
+    place(s_pop(LV["badge_pop"], 680), t_in + 0.04, "badge-pop")
+    def draw(frame, t):
+        if not (t_in <= t <= t_out + 0.25): return
+        k = ease_out_back((t - t_in) / 0.34, 1.1); ko = ease_in_cubic((t - t_out) / 0.2) if t > t_out else 0
+        yy = y - int((1 - k) * 90) - int(ko * 50)
+        frame.alpha_composite(with_alpha(img, clamp((t - t_in) / 0.12) * (1 - ko)), (cx - img.width // 2, yy - pad))
+    ELS.append((draw, t_in, t_out + 0.3))
+
+# ---- free SFX hits on the timeline (cuts, reveals, endings) ----
+def add_sfx(el):
+    for it in el["items"]:
+        t = T(it["at"]); g = it.get("gain", LV.get(it["kind"], 0.15))
+        snd = {"whoosh": lambda: s_whoosh(it.get("len", 0.35), g, it.get("up", True)), "thock": lambda: s_thock(g, it.get("f0", 150)),
+               "pop": lambda: s_pop(g, it.get("f0", 700)), "hit": lambda: s_hit(g), "click": lambda: s_click(g),
+               "sparkle": lambda: s_sparkle(g)}[it["kind"]]()
+        # a whoosh peaks in its middle: start it early so the peak lands on the given time
+        place(snd, t - (len(snd) / SR / 2 if it["kind"] == "whoosh" else 0), "sfx-" + it["kind"])
 
 # ---- tier list (rows land as they are said; an image moves into each) ----
 def add_tier_list(el):
@@ -353,8 +392,8 @@ def add_tier_list(el):
         frame.alpha_composite(with_alpha(sim, alpha * clamp((t - t_in - 0.2) / 0.3)), (int(sx - sp + dx), int(sy - sp)))
     ELS.append((draw, t_in, t_out + 0.4))
 
-ADDERS = {"buttons": add_buttons, "logo_card": add_logo_card, "badge": add_badge, "tier_list": add_tier_list}
-ORDER = {"tier_list": 0, "logo_card": 1, "badge": 2, "buttons": 3}   # back-to-front
+ADDERS = {"buttons": add_buttons, "logo_card": add_logo_card, "badge": add_badge, "tier_list": add_tier_list, "sfx": add_sfx}
+ORDER = {"tier_list": 0, "logo_card": 1, "badge": 2, "buttons": 3, "sfx": 4}   # back-to-front
 for el in sorted(TL.get("elements", []), key=lambda e: ORDER[e["type"]]):
     ADDERS[el["type"]](el)
 
@@ -382,7 +421,7 @@ with wave.open(stem, "wb") as wf:
     wf.writeframes((np.clip(sfx[: int(dur * SR)], -1, 1) * 32767).astype(np.int16).tobytes())
 json.dump({"captions": [{"s": round(c["s"], 3), "e": round(c["e"], 3), "text": " ".join(w["w"] for w in c["w"])} for c in CH], "sfx": cues},
           open(OUT.rsplit(".", 1)[0] + "_cues.json", "w"), ensure_ascii=False, indent=1)
-vf = "[0:v][1:v]overlay=0:0:format=auto" + (",scale=1280:720" if PREVIEW else "")
+vf = "[0:v][1:v]overlay=0:0:format=auto" + ((",scale=1280:-2" if W >= H else ",scale=-2:1280") if PREVIEW else "")
 lim = ST["mix"]["limiter"]
 cmd = ["ffmpeg", "-v", "error", "-y", "-i", SRC, "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-i", stem,
        "-filter_complex", vf + f"[v];[0:a][2:a]amix=inputs=2:duration=first:normalize=0,alimiter=limit={lim}:level=false[a]",

@@ -46,6 +46,16 @@ loanwords English ("LIKE", "CHASE").
 9. **Finals.** `python3 edit.py x.timeline.json x_final.mp4` (same size/fps/length as the source, H.264 CRF 16, AAC
    192k) + `x_final_sfx.wav` (SFX stem) + `x_final_cues.json`. Deliver all three per clip.
 
+## Vertical Shorts / Reels (no speech, music bed)
+Proven on the 23 s Deutschland Design Short (2026-11-06): `examples/deutschland-short/short.timeline.json`.
+- Cut points: `ffmpeg -i x.mp4 -vf "select='gt(scene,0.25)',showinfo" -f null -` + a 0.5 s contact sheet.
+- One `"layout": "row"` badge per product (logo left, brand + model right) at `"y": 300`: inside the top safe area,
+  clear of the Shorts/Reels UI at the bottom. In at the product's first shot, out just before the next product.
+- `{"type": "sfx"}` items on the cuts: whoosh into each new product (peak lands on the cut), soft thock on the
+  reveal cut, whoosh + hit on the ending. The badge pop is automatic.
+- `"sfx_gain": 2.8` (+9 dB) when the bed is loud music (~-15 LUFS); keep 1.0 under speech.
+- Previews scale the long side to 1280; the panel player follows the video's shape.
+
 ## Review panel
 `panel/edit-review.html` is the Edit Review Desk: an Artifact with `capabilities: {db: {}, assets: {}}`.
 Live copy: https://claude.ai/artifact/2zg5hityMzmcVTzmN3ij3p (reuse it for the next video: set `project/current`,
@@ -65,7 +75,7 @@ commons.wikimedia.org, download.pytorch.org, download-r2.pytorch.org, dl.fbaipub
 ## Files
 | Path | What |
 |---|---|
-| `edit.py` | the engine: captions, buttons, logo card + fan, badges, tier list, SFX, mix, preview/final/stills |
+| `edit.py` | the engine: captions, buttons, logo card + fan, badges (card and row layouts), tier list, timeline SFX, mix, preview/final/stills |
 | `style.json` | every look value (sizes, colours, timings, SFX levels); change the preset here, not in code |
 | `tools/align.py` | word timings (MMS forced alignment) |
 | `tools/fetch_logo.sh`, `tools/svg2png.js` | official logos from Wikimedia Commons → transparent PNG |
