@@ -18,6 +18,13 @@ Proven on **The Bridge That Fell for a Song**, a 67 s short about the 1831 Broug
 | `references/frames/` | 38 full-size reference frames (540x960) to compare your frames against |
 | `references/sheets/` | 20 contact sheets, one per reference short, 60 frames each (1,200 frames) |
 
+## Presets
+| Preset | What it is |
+|---|---|
+| `presets/clean-pop/` | **Clean Pop**: an edit preset for your own talking/unboxing footage. Clean word-timed captions, like / subscribe / hype tap buttons, brand logo badges, a logo card with a product fan, a tier list that fills as you name the tiers, and sound effects on graphics only. Includes the review panel and the word aligner. Approved on the Deutschland Design unboxing. See `presets/clean-pop/SKILL.md`. |
+
+To use it as its own skill, copy `presets/clean-pop/` to `~/.claude/skills/clean-pop-edit/` and say *"use my clean pop preset on these clips"*.
+
 ## Install
 1. Copy this folder to `~/.claude/skills/cartoon-3d-short/` (clone it there, or download the ZIP).
 2. You need [Remotion](https://www.remotion.dev/) with `@remotion/three`, plus Node, Python 3 and ffmpeg.

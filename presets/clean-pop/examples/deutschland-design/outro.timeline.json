@@ -1,0 +1,18 @@
+{
+  "src": "media/intro outro-2.mp4",
+  "words": "words.json",
+  "section": "outro",
+  "captions": {"ranges": [["@İzlediğiniz-0.11", "@koyardınız>+0.283"], ["@Diyelim-0.312", 88]]},
+  "elements": [
+    {"type": "tier_list", "title": "TIER LIST", "subtitle": "Deutschland Design",
+     "in": "@tier-0.024", "out": "@edelim-0.153", "park": "@Diyelim-0.512",
+     "image": {"file": "media/set.png", "crop": [30, 455, 1195, 1385]},
+     "rows": [{"label": "Ön siparişi bas", "at": "@Ön"}, {"label": "Av av av", "at": "@Av"},
+              {"label": "Rafta bulursam", "at": "@Rafta"}, {"label": "İndirimde belki", "at": "@İndirimde"},
+              {"label": "Çöp", "at": "@Yoksa"}]},
+    {"type": "buttons", "items": [
+        {"kind": "like",      "x": 500,  "y": 430, "in": "@Beğenmek-0.203", "tap": "@Beğenmek+0.067", "out": "@bunlar>+0.656"},
+        {"kind": "subscribe", "x": 960,  "y": 430, "in": "@Beğenmek-0.003", "tap": "@abone+0.037",    "out": "@bunlar>+0.756"},
+        {"kind": "hype",      "x": 1420, "y": 430, "in": "@Beğenmek+0.247", "tap": "@hype+0.026",     "out": "@bunlar>+0.856"}]}
+  ]
+}

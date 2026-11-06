@@ -1,0 +1,338 @@
+{
+  "name": "Clean Pop",
+  "approved_on": "2026-11-06, Deutschland Design unboxing (intro + outro), after 3 review rounds",
+  "fonts": {
+    "semibold": "fonts/InterDisplay-SemiBold.otf",
+    "bold": "fonts/InterDisplay-Bold.otf",
+    "black": "fonts/InterDisplay-Black.otf",
+    "icons_regular": "fonts/fa-regular-400.ttf",
+    "icons_solid": "fonts/fa-solid-900.ttf"
+  },
+  "colors": {
+    "ink": [
+      17,
+      17,
+      20
+    ],
+    "muted": [
+      90,
+      92,
+      100
+    ],
+    "card": [
+      255,
+      255,
+      255,
+      245
+    ],
+    "card_badge": [
+      255,
+      255,
+      255,
+      245
+    ]
+  },
+  "shadow": {
+    "radius": 16,
+    "opacity": 0.4,
+    "offset": [
+      0,
+      10
+    ]
+  },
+  "captions": {
+    "font": "semibold",
+    "size": 58,
+    "color": [
+      255,
+      255,
+      255
+    ],
+    "upcoming_alpha": 120,
+    "word_gap": 16,
+    "shadow": {
+      "radius": 9,
+      "opacity": 0.75,
+      "offset": [
+        0,
+        3
+      ],
+      "grow": 2
+    },
+    "bottom": 150,
+    "rise": 14,
+    "fade_in": 0.18,
+    "fade_out": 0.12,
+    "lead": 0.12,
+    "hold": 0.5,
+    "min_on": 0.8,
+    "bridge_gap": 0.9,
+    "max_words": 6,
+    "max_chars": 34,
+    "break_gap": 0.45
+  },
+  "buttons": {
+    "font": "bold",
+    "label_size": 44,
+    "icon_size": 56,
+    "pointer_size": 78,
+    "height": 116,
+    "kinds": {
+      "like": {
+        "off": {
+          "label": "Beğen",
+          "icon": "f164",
+          "style": "regular",
+          "bg": [
+            255,
+            255,
+            255
+          ],
+          "fg": [
+            17,
+            17,
+            20
+          ]
+        },
+        "on": {
+          "label": "Beğen",
+          "icon": "f164",
+          "style": "solid",
+          "bg": [
+            30,
+            107,
+            255
+          ],
+          "fg": [
+            255,
+            255,
+            255
+          ]
+        }
+      },
+      "subscribe": {
+        "off": {
+          "label": "Abone ol",
+          "icon": "f0f3",
+          "style": "regular",
+          "bg": [
+            230,
+            33,
+            23
+          ],
+          "fg": [
+            255,
+            255,
+            255
+          ]
+        },
+        "on": {
+          "label": "Abone olundu",
+          "icon": "f0f3",
+          "style": "solid",
+          "bg": [
+            62,
+            64,
+            72
+          ],
+          "fg": [
+            255,
+            255,
+            255
+          ]
+        }
+      },
+      "hype": {
+        "off": {
+          "label": "Hype",
+          "icon": "f135",
+          "style": "solid",
+          "bg": [
+            255,
+            255,
+            255
+          ],
+          "fg": [
+            17,
+            17,
+            20
+          ]
+        },
+        "on": {
+          "label": "Hype",
+          "icon": "f135",
+          "style": "solid",
+          "bg": [
+            255,
+            122,
+            0
+          ],
+          "fg": [
+            255,
+            255,
+            255
+          ]
+        }
+      },
+      "follow": {
+        "off": {
+          "label": "Takip et",
+          "icon": "f234",
+          "style": "solid",
+          "bg": [
+            0,
+            149,
+            246
+          ],
+          "fg": [
+            255,
+            255,
+            255
+          ]
+        },
+        "on": {
+          "label": "Takip ediliyor",
+          "icon": "f00c",
+          "style": "solid",
+          "bg": [
+            62,
+            64,
+            72
+          ],
+          "fg": [
+            255,
+            255,
+            255
+          ]
+        }
+      }
+    }
+  },
+  "logo_card": {
+    "w": 520,
+    "h": 210,
+    "radius": 30,
+    "logo_max": [
+      440,
+      160
+    ],
+    "subtitle_size": 26,
+    "fan_card_max": [
+      175,
+      230
+    ]
+  },
+  "badge": {
+    "w": 330,
+    "h": 330,
+    "radius": 28,
+    "logo_max": [
+      250,
+      170
+    ],
+    "wordmark_max": [
+      270,
+      60
+    ],
+    "title_size": 34,
+    "subtitle_size": 28
+  },
+  "tier_list": {
+    "w": 900,
+    "header_h": 74,
+    "row_h": 136,
+    "gap": 10,
+    "label_w": 300,
+    "image_h": 120,
+    "title_size": 40,
+    "label_size": 34,
+    "subtitle_size": 26,
+    "header_bg": [
+      17,
+      17,
+      20,
+      235
+    ],
+    "row_bg": [
+      22,
+      22,
+      26,
+      225
+    ],
+    "subtitle_color": [
+      170,
+      172,
+      180
+    ],
+    "colors": [
+      [
+        76,
+        208,
+        125
+      ],
+      [
+        170,
+        220,
+        90
+      ],
+      [
+        255,
+        214,
+        77
+      ],
+      [
+        255,
+        159,
+        67
+      ],
+      [
+        255,
+        92,
+        92
+      ]
+    ]
+  },
+  "sfx": {
+    "button_pop": 0.12,
+    "button_click": 0.22,
+    "button_sparkle": 0.08,
+    "button_out": 0.06,
+    "logo_in": 0.1,
+    "logo_out": 0.05,
+    "fan_in": 0.08,
+    "badge_in": 0.1,
+    "board_in": 0.14,
+    "tier_row": 0.2,
+    "tier_move": 0.07,
+    "board_out": 0.09,
+    "badge_pop": 0.14,
+    "whoosh": 0.2,
+    "thock": 0.28,
+    "hit": 0.3,
+    "pop": 0.14,
+    "click": 0.22,
+    "sparkle": 0.1
+  },
+  "mix": {
+    "limiter": 0.89
+  },
+  "badge_row": {
+    "h": 230,
+    "radius": 34,
+    "pad": 40,
+    "gap": 34,
+    "logo_box": 170,
+    "logo_max": [
+      170,
+      170
+    ],
+    "wordmark_max": [
+      420,
+      80
+    ],
+    "title_size": 70,
+    "subtitle_size": 50,
+    "title_y": 40,
+    "subtitle_y": 128
+  }
+}

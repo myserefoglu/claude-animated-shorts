@@ -1,0 +1,6 @@
+examples/*/media
+examples/*/logos
+examples/*/*.mp4
+examples/*/*_sfx.wav
+examples/*/*_cues.json
+logos/
