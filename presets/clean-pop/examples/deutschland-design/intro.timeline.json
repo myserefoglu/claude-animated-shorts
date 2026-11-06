@@ -1,0 +1,23 @@
+{
+  "src": "media/intro outro-1.mp4",
+  "words": "words.json",
+  "section": "intro",
+  "captions": {"ranges": [[0, 44.6]]},
+  "elements": [
+    {"type": "logo_card", "logo": "logos/hw.png", "subtitle": "Premium · Car Culture",
+     "in": "@Hot-0.05", "out": "@var>+0.33", "x": 400, "y": 160,
+     "fan": {"in": "@seti", "images": [
+        {"file": "media/set.png", "crop": [37, 925, 402, 1372]},
+        {"file": "media/set.png", "crop": [420, 463, 787, 910]},
+        {"file": "media/set.png", "crop": [805, 463, 1170, 910]},
+        {"file": "media/set.png", "crop": [420, 925, 787, 1372]},
+        {"file": "media/set.png", "crop": [805, 925, 1170, 1372]}]}},
+    {"type": "buttons", "items": [
+        {"kind": "like", "x": 330, "y": 380, "in": "@like-0.065", "tap": "@unutmayın+0.005", "out": "@efendim>+0.725"}]},
+    {"type": "badge", "logo": "logos/vw.png", "title": "Volkswagen", "subtitle": "Golf MK7 GTI", "in": 45.40, "out": 47.30},
+    {"type": "badge", "logo": "logos/audi.png", "title": "Audi", "subtitle": "RS 6 Avant", "in": 49.90, "out": 51.35},
+    {"type": "badge", "logo": "logos/bmw.png", "title": "BMW", "subtitle": "M5 · 2025", "in": 53.90, "out": 55.35},
+    {"type": "badge", "logo": {"file": "logos/mercedes.png", "crop": [0, 0, 600, 600]}, "title": "Mercedes-AMG", "subtitle": "GT 63 Pro · 2025", "in": 57.90, "out": 59.80},
+    {"type": "badge", "logo": "logos/porsche.png", "wordmark": true, "title": "Porsche", "subtitle": "718 Cayman GT4", "in": 62.40, "out": 63.85}
+  ]
+}
