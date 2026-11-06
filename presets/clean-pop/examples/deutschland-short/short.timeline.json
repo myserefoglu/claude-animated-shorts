@@ -8,6 +8,32 @@
  "sfx_gain": 2.8,
  "elements": [
   {
+   "type": "buttons",
+   "items": [
+    {
+     "kind": "follow",
+     "x": 720,
+     "y": 300,
+     "in": 0.25,
+     "tap": 1.15,
+     "out": 1.9
+    }
+   ]
+  },
+  {
+   "type": "buttons",
+   "items": [
+    {
+     "kind": "follow",
+     "x": 720,
+     "y": 300,
+     "in": 22.2,
+     "tap": 22.75,
+     "out": 23.4
+    }
+   ]
+  },
+  {
    "type": "badge",
    "layout": "row",
    "logo": {

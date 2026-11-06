@@ -173,6 +173,38 @@
             255
           ]
         }
+      },
+      "follow": {
+        "off": {
+          "label": "Takip et",
+          "icon": "f234",
+          "style": "solid",
+          "bg": [
+            0,
+            149,
+            246
+          ],
+          "fg": [
+            255,
+            255,
+            255
+          ]
+        },
+        "on": {
+          "label": "Takip ediliyor",
+          "icon": "f00c",
+          "style": "solid",
+          "bg": [
+            62,
+            64,
+            72
+          ],
+          "fg": [
+            255,
+            255,
+            255
+          ]
+        }
       }
     }
   },
